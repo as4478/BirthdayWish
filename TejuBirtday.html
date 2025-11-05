@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Bestie 💖</title>
+<style>
+  body {
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    color: white;
+    font-family: 'Comic Sans MS', cursive;
+    text-align: center;
+    padding-top: 80px;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  img {
+    width: 180px;
+    max-width: 60%;
+    border-radius: 50%;
+    box-shadow: 0 0 25px white;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 2em;
+    margin: 10px 20px;
+    text-shadow: 2px 2px 10px #ff1493;
+  }
+
+  #message {
+    font-size: 1.2em;
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    line-height: 1.6em;
+    white-space: pre-wrap;
+  }
+
+  .heart {
+    position: absolute;
+    color: #fff;
+    animation: float 5s linear infinite;
+  }
+
+  @keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-600px); opacity: 0; }
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  #popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 182, 193, 0.95);
+    padding: 25px 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px #fff;
+    color: white;
+    font-size: 1.8em;
+    animation: glow 2s infinite alternate;
+    z-index: 9999;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4, 0 0 30px #ff1493; }
+    to { text-shadow: 0 0 30px #fff, 0 0 60px #ff69b4, 0 0 90px #ff1493; }
+  }
+
+  /* 🌸 Start button */
+  #startBtn {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ff69b4;
+    color: white;
+    border: none;
+    font-size: 1.5em;
+    padding: 15px 30px;
+    border-radius: 30px;
+    box-shadow: 0 0 30px #fff;
+    cursor: pointer;
+    z-index: 99999;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px #fff; }
+    50% { box-shadow: 0 0 30px #ff1493; }
+    100% { box-shadow: 0 0 10px #fff; }
+  }
+
+  /* 📱 Responsive adjustments */
+  @media (max-width: 768px) {
+    h1 { font-size: 1.7em; }
+    #message { font-size: 1.1em; width: 90%; }
+    #popup { font-size: 1.5em; padding: 20px 30px; }
+    #startBtn { font-size: 1.3em; padding: 12px 25px; }
+  }
+
+  @media (max-width: 480px) {
+    img { width: 140px; }
+    h1 { font-size: 1.5em; }
+    #message { font-size: 1em; }
+    #popup { font-size: 1.3em; }
+    #startBtn { font-size: 1.1em; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 👑 Friend’s photo -->
+<img src="Teju.jpg" alt="Best Friend Photo">
+
+<h1>🎉💖 Happy Birthday, <span id="name">Teju😍</span>! 💖🎉</h1>
+<div id="message"></div>
+
+<!-- 🎧 Background music -->
+<audio id="bgMusic" loop>
+  <source src="ReelAudio-94677.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- 🎊 Confetti canvas -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- 🌟 Glowing popup -->
+<div id="popup">🎂 HAPPY BIRTHDAY, TEJU! 🎂</div>
+
+<!-- 🌸 Start button -->
+<button id="startBtn">🎵 Tap to Start 💖</button>
+
+<script>
+// 💕 Customize
+const name = "Teju😍";
+const nameEl = document.getElementById("name");
+const msgEl = document.getElementById("message");
+const popup = document.getElementById("popup");
+const startBtn = document.getElementById("startBtn");
+const bgMusic = document.getElementById("bgMusic");
+nameEl.textContent = name;
+
+// 💌 Message lines
+const lines = [
+  "💕",
+  "May your day sparkle like your smile ✨",
+  "And your heart be filled with laughter, love, and cake 🎂🎈",
+  "Keep glowing, keep smiling, and stay amazing as always 🌟",
+  "Bestie! 💕💐"
+];
+
+// ✨ Typing effect
+async function typeLine(line) {
+  for (let ch of line) {
+    msgEl.innerHTML += ch;
+    await new Promise(r => setTimeout(r, 70));
+  }
+  msgEl.innerHTML += "<br><br>";
+}
+
+async function showMessage() {
+  for (let line of lines) {
+    await typeLine(line);
+    await new Promise(r => setTimeout(r, 400));
+  }
+  startConfetti();
+  setTimeout(() => popup.style.display = "block", 1000);
+}
+
+// 💖 Floating hearts
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.textContent = "💖";
+  heart.className = "heart";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = "100%";
+  heart.style.fontSize = Math.random() * 20 + 20 + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+setInterval(createHeart, 300);
+
+// 🎊 Confetti setup
+const canvas = document.getElementById("confettiCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+const colors = ["#ff1493", "#fff", "#ff69b4", "#ffd700", "#00ffff"];
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function createConfettiPiece() {
+  return {
+    x: random(0, canvas.width),
+    y: random(-canvas.height, 0),
+    size: random(5, 10),
+    color: colors[Math.floor(random(0, colors.length))],
+    speed: random(2, 5),
+    angle: random(0, 2 * Math.PI)
+  };
+}
+
+function startConfetti() {
+  confetti = Array.from({ length: 200 }, createConfettiPiece);
+  animateConfetti();
+}
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confetti.forEach(p => {
+    p.y += p.speed;
+    p.x += Math.sin(p.angle);
+    p.angle += 0.02;
+    if (p.y > canvas.height) p.y = -10;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animateConfetti);
+}
+
+// 🎵 Start when user taps
+startBtn.addEventListener("click", async () => {
+  startBtn.style.display = "none";  // hide button
+  try {
+    await bgMusic.play();
+  } catch (err) {
+    console.warn("Audio blocked:", err);
+  }
+  bgMusic.volume = 0.5;
+  showMessage();
+});
+</script>
+
+</body>
+</html>
